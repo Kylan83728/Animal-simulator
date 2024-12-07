@@ -276,20 +276,29 @@ local Toggle = pvpTab:CreateToggle({
    CurrentValue = false,
    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-while true do
-    local args = {
-        [1] = {
-            ["action"] = "damage player",
-            ["damage"] = 1000000000000  -- Remplace 1000000000000 par le montant de dégâts que tu souhaites infliger
-        }
-    }
-
-    ReplicatedStorage.Events.NPCDamageEvent:FireServer(unpack(args))
-    
-    wait(0.1)  -- Attendre 1 seconde entre chaque envoi. Ajuste ce délai selon tes besoins.
-end
+        if Value then
+            -- Si le toggle est activé et qu'il n'est pas déjà en train d'inviter
+            if not isInviting then
+                isInviting = true
+                -- Démarrer l'envoi des invitations en boucle
+                while isInviting do
+                    local players = game:GetService("Players"):GetPlayers()
+                    for _, player in ipairs(players) do
+                        game:GetService("ReplicatedStorage").invitationEvent:FireServer({
+                            ["action"] = "invite_clan",
+                            ["oplr"] = player
+                        })
+                    end
+                    print("All players have been invited to the clan.")
+                    wait()  -- Attendre 5 secondes avant de réessayer (ajustez selon vos besoins)
+                end
+            end
+        else
+            -- Si le toggle est désactivé, arrêter l'invitation
+            isInviting = false
+            print("Toggle is off, no more invitations sent.")
+        end
+    end,
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
    end,
