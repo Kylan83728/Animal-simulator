@@ -333,38 +333,45 @@ end
 
 
 
-local pvppTab = Window:CreateTab("PvP", 4483362458) -- Title, Image
+local pvpTab = Window:CreateTab("PvP", 4483362458) -- Title, Image
 
 
 local isHitting = false
-local Toggle = pvppTab:CreateToggle({
-   Name = "kill aura👻",
-   CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-   local players = game:GetService("Players")
+local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local player = players.LocalPlayer
-local isHitting = true -- Définir à true pour commencer à infliger des dégâts
 
-if isHitting then
-    -- Lancer une boucle non bloquante
+local function startKillAura()
+    isHitting = true
     task.spawn(function()
         while isHitting do
             for _, targetPlayer in pairs(players:GetPlayers()) do
                 if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") then
                     local args = {
                         [1] = targetPlayer.Character.Humanoid,
-                        [2] = 1 -- Dégâts à infliger
+                        [2] = 1 
                     }
                     replicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))
                 end
             end
-            task.wait(0.1) -- Pause entre les attaques
+            task.wait() 
         end
     end)
 end
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-   end,
+
+local function stopKillAura()
+    isHitting = false
+end
+
+local Toggle = pvpTab:CreateToggle({
+    Name = "kill auraðŸ‘»",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(Value)
+        if Value then
+            startKillAura()
+        else
+            stopKillAura()
+        end
+    end,
 })
