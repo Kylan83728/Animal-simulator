@@ -1,11 +1,9 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-
 local Window = Rayfield:CreateWindow({
-   Name = "Rayfield Example Window",
+   Name = "ASTRAL HUB - animal simulator🐻",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Rayfield Interface Suite",
-   LoadingSubtitle = "by Sirius",
+   LoadingTitle = "animal simulator🐻",
+   LoadingSubtitle = "hub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
    DisableRayfieldPrompts = false,
@@ -36,73 +34,275 @@ local Window = Rayfield:CreateWindow({
 })
 
 
-local MainTab = Window:CreateTab("home", 4483362458) -- Title, Image
-local Section = MainTab:CreateSection("home")
+
+local farmTab = Window:CreateTab("Farm", 4483362458) -- Title, Image
 
 
 
-local isHitting = false
-local players = game:GetService("Players")
-local replicatedStorage = game:GetService("ReplicatedStorage")
-local player = players.LocalPlayer
+local Toggle = farmTab:CreateToggle({
+   Name = "farm Spawn👊🔥",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
 
--- Fonction pour obtenir le joueur le plus proche
-local function getClosestPlayer()
-    local closestPlayer = nil
-    local shortestDistance = math.huge  -- Une valeur initiale infinie
-
-    -- Parcours de tous les joueurs
-    for _, targetPlayer in pairs(players:GetPlayers()) do
-        if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
-            local playerPosition = player.Character.HumanoidRootPart.Position
-            local distance = (targetPosition - playerPosition).Magnitude  -- Calcul de la distance
-
-            -- Si cette distance est plus courte que la prÃ©cÃ©dente, on met Ã  jour
-            if distance < shortestDistance then
-                closestPlayer = targetPlayer
-                shortestDistance = distance
-            end
-        end
-    end
-
-    return closestPlayer
-end
-
-local function startKillAura()
-    isHitting = true
-    while isHitting do
-        local closestPlayer = getClosestPlayer()  -- RÃ©cupÃ¨re le joueur le plus proche
-        if closestPlayer and closestPlayer.Character and closestPlayer.Character:FindFirstChild("Humanoid") then
-            local args = {
-                [1] = closestPlayer.Character.Humanoid,
-                [2] = 1  -- Valeur Ã  envoyer au serveur, peut Ãªtre ajustÃ©e si nÃ©cessaire
-            }
-            -- Appelez la fonction sur le serveur
-            replicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))  -- VÃ©rifiez ce nom
-        end
-        task.wait()  -- Ajoutez une petite attente pour Ã©viter de trop solliciter le serveur
+-- Fonction pour téléporter le joueur vers une position cible
+local function teleportToTarget(targetPosition)
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
     end
 end
 
-local function stopKillAura()
-    isHitting = false
+-- Fonction pour téléporter le joueur vers un Dummy
+local function teleportToDummy()
+    local dummy = workspace.MAP.dummies.Dummy
+    if dummy and dummy:FindFirstChild("HumanoidRootPart") then
+        local dummyPosition = dummy.HumanoidRootPart.Position
+        teleportToTarget(dummyPosition + Vector3.new(0, 1, 0)) -- Lève légèrement le joueur au-dessus du Dummy
+    end
 end
 
--- CrÃ©ation du Toggle pour activer/dÃ©sactiver le kill aura
-local Toggle = MainTab:CreateToggle({
-    Name = "kill aura",
-    CurrentValue = false,
-    Flag = "Toggle1", 
-    Callback = function(Value)
-        if Value then
-            task.spawn(startKillAura)
-        else
-            stopKillAura()
+-- Exemple d'utilisation : téléporte le joueur vers le Dummy
+teleportToDummy()
+
+-- Arguments pour l'envoi d'événements au Dummy
+local args = {
+    [1] = workspace.MAP.dummies.Dummy.Humanoid,
+    [2] = 1
+}
+
+isHitting = Value
+
+        if isHitting then
+            -- Lancer une boucle non bloquante
+            task.spawn(function()
+                while isHitting do
+
+-- Définir la variable globale d'état
+local isHitting = true -- Changez cette valeur pour activer/désactiver
+
+            game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))
+            task.wait(0.1) -- Pause minimale pour éviter de surcharger le thread
         end
-    end,
+    end)
+end
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
 })
 
 
 
-Rayfield:LoadConfiguration()
+local isHitting = false
+local Toggle = farmTab:CreateToggle({
+   Name = "farm 5k🔥👊",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+local args = {
+    [1] = workspace.MAP:FindFirstChild("5k_dummies").Dummy2.Humanoid,
+    [2] = 4
+}
+
+isHitting = Value
+
+        if isHitting then
+            -- Lancer une boucle non bloquante
+            task.spawn(function()
+                while isHitting do
+
+game:GetService("ReplicatedStorage").jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))
+task.wait(0.1) -- Pause
+
+end
+            end)
+        end
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+
+
+local Toggle = farmTab:CreateToggle({
+   Name = "fire ball spawn🔥",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+local args = {
+    [1] = Vector3.new(-126.10099792480469, 646.1202392578125, 594.0977783203125),
+    [2] = "NewFireball"
+}
+
+ isHitting = Value
+
+        if isHitting then
+            -- Lancer une boucle non bloquante
+            task.spawn(function()
+                while isHitting do
+
+game:GetService("ReplicatedStorage").SkillsInRS.RemoteEvent:FireServer(unpack(args))
+task.wait(0.1) -- Pause
+end
+            end)
+        end
+
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+
+
+local isHitting = false
+local Toggle = farmTab:CreateToggle({
+   Name = "fire ball 5k🔥",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+local args = {
+    [1] = Vector3.new(-83.04418182373047, 595.0643920898438, 813.4301147460938),
+    [2] = "NewFireball"
+}
+
+ isHitting = Value
+
+        if isHitting then
+            -- Lancer une boucle non bloquante
+            task.spawn(function()
+                while isHitting do
+
+game:GetService("ReplicatedStorage").SkillsInRS.RemoteEvent:FireServer(unpack(args))
+task.wait(0.1) -- Pause
+end
+            end)
+        end
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+
+
+local isHitting = false
+local Toggle = farmTab:CreateToggle({
+   Name = "auto coin",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+ isHitting = Value
+
+        if isHitting then
+            -- Lancer une boucle non bloquante
+            task.spawn(function()
+                while isHitting do
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("CoinEvent"):FireServer()
+task.wait(0.1) -- Pause
+wait()
+end
+end)
+        end
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+
+
+local isHitting = false
+local Toggle = farmTab:CreateToggle({
+   Name = "kill all boss🐎🦒🐈🔥🦀🐸🐻",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+while true do
+local args = {
+    [1] = workspace:WaitForChild("NPC"):WaitForChild("Griffin"):WaitForChild("Humanoid"),
+    [2] = 3
+}
+ 
+game:GetService("ReplicatedStorage"):WaitForChild("jdskhfsIIIllliiIIIdchgdIiIIIlIlIli"):FireServer(unpack(args))
+local args = {
+    [1] = workspace:WaitForChild("NPC"):WaitForChild("CRABBOSS"):WaitForChild("Humanoid"),
+    [2] = 1
+}
+ 
+game:GetService("ReplicatedStorage"):WaitForChild("jdskhfsIIIllliiIIIdchgdIiIIIlIlIli"):FireServer(unpack(args))
+local args = {
+    [1] = workspace:WaitForChild("NPC"):WaitForChild("LavaGorilla"):WaitForChild("Humanoid"),
+    [2] = 5
+}
+ 
+game:GetService("ReplicatedStorage"):WaitForChild("jdskhfsIIIllliiIIIdchgdIiIIIlIlIli"):FireServer(unpack(args))
+local args = {
+    [1] = workspace:WaitForChild("NPC"):WaitForChild("CENTAUR"):WaitForChild("Humanoid"),
+    [2] = 4
+}
+ 
+game:GetService("ReplicatedStorage"):WaitForChild("jdskhfsIIIllliiIIIdchgdIiIIIlIlIli"):FireServer(unpack(args))
+local args = {
+    [1] = workspace:WaitForChild("NPC"):WaitForChild("DragonGiraffe"):WaitForChild("Humanoid"),
+    [2] = 1
+}
+ 
+game:GetService("ReplicatedStorage"):WaitForChild("jdskhfsIIIllliiIIIdchgdIiIIIlIlIli"):FireServer(unpack(args))
+wait()
+end
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+
+
+local Button = farmTab:CreateButton({
+   Name = "anti afk😴",
+   Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/2n6FV7Sc"))()
+   -- The function that takes place when the button is pressed
+   end,
+})
+
+
+
+local hommeTab = Window:CreateTab("Homme", 4483362458) -- Title, Image
+
+
+local isHitting = false
+local Toggle = hommeTab:CreateToggle({
+   Name = "infini healt♾️",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   local args = {
+    [1] = {
+        ["action"] = "damage",
+        ["damage"] = -math.huge  -- Utilisez 'math.huge' pour représenter l'infini
+    }
+}
+
+ isHitting = Value
+
+        if isHitting then
+            -- Lancer une boucle non bloquante
+            task.spawn(function()
+                while isHitting do
+
+while true do
+    game:GetService("ReplicatedStorage").Events.NPCDamageEvent:FireServer(unpack(args))
+task.wait(0.01) -- Pause
+    wait(0.01)  -- Attendre 1 seconde entre chaque envoi pour éviter une surcharge
+end
+end
+            end)
+        end
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+
+local clanTab = Window:CreateTab("Clans", 4483362458) -- Title, Image
+
+
