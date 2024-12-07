@@ -337,7 +337,15 @@ local pvpTab = Window:CreateTab("PvP", 4483362458) -- Title, Image
 
 
 local isHitting = false
-local players = game:GetService("Players")
+
+
+
+local Toggle = pvpTab:CreateToggle({
+    Name = "kill auraðŸ‘»",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(Value)
+       local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local player = players.LocalPlayer
 
@@ -361,15 +369,8 @@ end
 local function stopKillAura()
     isHitting = false
 end
-
-
-local Toggle = pvpTab:CreateToggle({
-    Name = "kill auraðŸ‘»",
-    CurrentValue = false,
-    Flag = "Toggle1", 
-    Callback = function(Value)
-        if Value then
-
+ if Value then
+      
             task.spawn(startKillAura)
         else
 
