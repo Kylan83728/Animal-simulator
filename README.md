@@ -1,4 +1,6 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+
 local Window = Rayfield:CreateWindow({
    Name = "Rayfield Example Window",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
@@ -34,59 +36,73 @@ local Window = Rayfield:CreateWindow({
 })
 
 
-local mainTab = Window:CreateTab("home", 4483362458) -- Title, Image
+local MainTab = Window:CreateTab("home", 4483362458) -- Title, Image
+local Section = MainTab:CreateSection("home")
 
 
-local Section = mainTab:CreateSection("home")
 
-
-local Toggle = mainTab:CreateToggle({
-   Name = "kill aura",
-   CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
 local isHitting = false
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local player = players.LocalPlayer
 
+-- Fonction pour obtenir le joueur le plus proche
+local function getClosestPlayer()
+    local closestPlayer = nil
+    local shortestDistance = math.huge  -- Une valeur initiale infinie
+
+    -- Parcours de tous les joueurs
+    for _, targetPlayer in pairs(players:GetPlayers()) do
+        if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
+            local playerPosition = player.Character.HumanoidRootPart.Position
+            local distance = (targetPosition - playerPosition).Magnitude  -- Calcul de la distance
+
+            -- Si cette distance est plus courte que la prÃ©cÃ©dente, on met Ã  jour
+            if distance < shortestDistance then
+                closestPlayer = targetPlayer
+                shortestDistance = distance
+            end
+        end
+    end
+
+    return closestPlayer
+end
 
 local function startKillAura()
     isHitting = true
     while isHitting do
-        for _, targetPlayer in pairs(players:GetPlayers()) do
-            if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") then
-                local args = {
-                    [1] = targetPlayer.Character.Humanoid,
-                    [2] = 1 
-                }
-                replicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))
-            end
+        local closestPlayer = getClosestPlayer()  -- RÃ©cupÃ¨re le joueur le plus proche
+        if closestPlayer and closestPlayer.Character and closestPlayer.Character:FindFirstChild("Humanoid") then
+            local args = {
+                [1] = closestPlayer.Character.Humanoid,
+                [2] = 1  -- Valeur Ã  envoyer au serveur, peut Ãªtre ajustÃ©e si nÃ©cessaire
+            }
+            -- Appelez la fonction sur le serveur
+            replicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))  -- VÃ©rifiez ce nom
         end
-        task.wait() 
+        task.wait()  -- Ajoutez une petite attente pour Ã©viter de trop solliciter le serveur
+    end
 end
-
 
 local function stopKillAura()
     isHitting = false
 end
 
-
-local Toggle = pvpTab:CreateToggle({
-    Name = "kill auraðŸ‘»",
+-- CrÃ©ation du Toggle pour activer/dÃ©sactiver le kill aura
+local Toggle = MainTab:CreateToggle({
+    Name = "kill aura",
     CurrentValue = false,
     Flag = "Toggle1", 
     Callback = function(Value)
         if Value then
-
             task.spawn(startKillAura)
         else
-
             stopKillAura()
         end
     end,
 })
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-   end,
-})
+
+
+
+Rayfield:LoadConfiguration()
