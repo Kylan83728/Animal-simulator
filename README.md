@@ -303,60 +303,15 @@ end
 })
 
 
-local clanTab = Window:CreateTab("Clans", 4483362458) -- Title, Image
+local trolTab = Window:CreateTab("Troll", 4483362458) -- Title, Image
 
 
 local isHitting = false
-local Toggle = clanTab:CreateToggle({
+local Toggle = trolTab:CreateToggle({
    Name = "invite all player dans le clan",
    CurrentValue = false,
    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-   end,
-})
-
-
-local pvpTab = Window:CreateTab("PvP", 4483362458) -- Title, Image
-
-
-
-local Toggle = pvpTab:CreateToggle({
-   Name = "kill aura👻",
-   CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-   RÃ©cupÃ¨re le joueur le plus proche
-        if closestPlayer and closestPlayer.Character and closestPlayer.Character:FindFirstChild("Humanoid") then
-            local args = {
-                [1] = closestPlayer.Character.Humanoid,
-                [2] = 1  -- Valeur Ã  envoyer au serveur, peut Ãªtre ajustÃ©e si nÃ©cessaire
-            }
-            -- Appelez la fonction sur le serveur
-            replicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))  -- VÃ©rifiez ce nom
-        end
-        task.wait()  -- Ajoutez une petite attente pour Ã©viter de trop solliciter le serveur
-    end
-end
-
-local function stopKillAura()
-    isHitting = false
-end
-
--- CrÃ©ation du Toggle pour activer/dÃ©sactiver le kill aura
-local Toggle = pvpTab:CreateToggle({
-    Name = "kill aura",
-    CurrentValue = false,
-    Flag = "Toggle1", 
-    Callback = function(Value)
-        if Value then
-            task.spawn(startKillAura)
-        else
-            stopKillAura()
-        end
-    end,
-})
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
    end,
