@@ -266,47 +266,6 @@ loadstring(game:HttpGet("https://pastebin.com/raw/2n6FV7Sc"))()
 
 
 
-local pvpTab = Window:CreateTab("PvP", 4483362458) -- Title, Image
-
-
-
-local isHitting = false
-local Toggle = pvpTab:CreateToggle({
-   Name = "kill aura👻",
-   CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-        if Value then
-            -- Si le toggle est activé et qu'il n'est pas déjà en train d'inviter
-            if not isInviting then
-                isInviting = true
-                -- Démarrer l'envoi des invitations en boucle
-                while isInviting do
-                    local players = game:GetService("Players"):GetPlayers()
-                    for _, player in ipairs(players) do
-                        game:GetService("ReplicatedStorage").invitationEvent:FireServer({
-                            ["action"] = "invite_clan",
-                            ["oplr"] = player
-                        })
-                    end
-                    print("All players have been invited to the clan.")
-                    wait()  -- Attendre 5 secondes avant de réessayer (ajustez selon vos besoins)
-                end
-            end
-        else
-            -- Si le toggle est désactivé, arrêter l'invitation
-            isInviting = false
-            print("Toggle is off, no more invitations sent.")
-        end
-    end,
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-   end,
-})
-
-
-
-
 local hommeTab = Window:CreateTab("Homme", 4483362458) -- Title, Image
 
 
@@ -338,6 +297,35 @@ end
 end
             end)
         end
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+
+local clanTab = Window:CreateTab("Clans", 4483362458) -- Title, Image
+
+
+local isHitting = false
+local Toggle = clanTab:CreateToggle({
+   Name = "invite all player dans le clan",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   local players = game:GetService("Players")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+for _, player in pairs(players:GetPlayers()) do
+    if player ~= players.LocalPlayer then -- Ignore le joueur local
+        local args = {
+            [1] = {
+                ["action"] = "invite_clan",
+                ["oplr"] = player
+            }
+        }
+        replicatedStorage.invitationEvent:FireServer(unpack(args))
+    end
+end
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
    end,
