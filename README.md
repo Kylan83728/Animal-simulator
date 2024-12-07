@@ -341,27 +341,27 @@ local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local player = players.LocalPlayer
 
+
 local function startKillAura()
     isHitting = true
-    task.spawn(function()
-        while isHitting do
-            for _, targetPlayer in pairs(players:GetPlayers()) do
-                if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") then
-                    local args = {
-                        [1] = targetPlayer.Character.Humanoid,
-                        [2] = 1 
-                    }
-                    replicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))
-                end
+    while isHitting do
+        for _, targetPlayer in pairs(players:GetPlayers()) do
+            if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") then
+                local args = {
+                    [1] = targetPlayer.Character.Humanoid,
+                    [2] = 1 
+                }
+                replicatedStorage.jdskhfsIIIllliiIIIdchgdIiIIIlIlIli:FireServer(unpack(args))
             end
-            task.wait() 
         end
-    end)
+        task.wait() 
 end
+
 
 local function stopKillAura()
     isHitting = false
 end
+
 
 local Toggle = pvpTab:CreateToggle({
     Name = "kill auraðŸ‘»",
@@ -369,8 +369,10 @@ local Toggle = pvpTab:CreateToggle({
     Flag = "Toggle1", 
     Callback = function(Value)
         if Value then
-            startKillAura()
+
+            task.spawn(startKillAura)
         else
+
             stopKillAura()
         end
     end,
