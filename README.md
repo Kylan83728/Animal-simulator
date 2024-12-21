@@ -1,9 +1,9 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "ASTRAL HUB - animal simulator🐻",
+   Name = "🐻animal simulator🐻",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "animal simulator🐻",
-   LoadingSubtitle = "hub",
+   LoadingTitle = "script ASTRAL",
+   LoadingSubtitle = "HUB",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
    DisableRayfieldPrompts = false,
@@ -259,58 +259,48 @@ end
 local Button = farmTab:CreateButton({
    Name = "anti afk😴",
    Callback = function()
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/Proxylol/OtherScripts/main/AntiAfk.lua'),true))()
+loadstring(game:HttpGet("https://pastebin.com/raw/2n6FV7Sc"))()
    -- The function that takes place when the button is pressed
    end,
 })
 
 
-local hommeTab = Window:CreateTab("Homme", 4483362458) -- Title, Image
+
+local clanTab = Window:CreateTab("invite player clan", 4483362458) -- Title, Image
 
 
 local isHitting = false
-local Toggle = hommeTab:CreateToggle({
-   Name = "infini healt♾️",
+local Toggle = Tab:CreateToggle({
+   Name = "invite all player clan",
    CurrentValue = false,
    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-   local args = {
-    [1] = {
-        ["action"] = "damage",
-        ["damage"] = -math.huge  -- Utilisez 'math.huge' pour représenter l'infini
-    }
-}
+   local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
- isHitting = Value
+local function inviteAllPlayers()
+    for _, player in ipairs(Players:GetPlayers()) do
+        local args = {
+            [1] = {
+                ["action"] = "invite_clan",
+                ["oplr"] = player
+            }
+        }
 
-        if isHitting then
-            -- Lancer une boucle non bloquante
-            task.spawn(function()
-                while isHitting do
-
-while true do
-    game:GetService("ReplicatedStorage").Events.NPCDamageEvent:FireServer(unpack(args))
-task.wait(0.01) -- Pause
-    wait(0.01)  -- Attendre 1 seconde entre chaque envoi pour éviter une surcharge
+        -- Lancer une boucle non bloquante pour inviter chaque joueur
+        task.spawn(function()
+            local isHitting = true -- Vous pouvez changer cette condition selon vos besoins
+            while isHitting do
+                ReplicatedStorage.invitationEvent:FireServer(unpack(args))
+                task.wait(0.1) -- Pause entre les invitations
+                -- Vous pouvez ajouter une condition pour arrêter la boucle si nécessaire
+            end
+        end)
+    end
 end
-end
-            end)
-        end
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-   end,
-})
 
-
-local trolTab = Window:CreateTab("Troll", 4483362458) -- Title, Image
-
-
-local isHitting = false
-local Toggle = trolTab:CreateToggle({
-   Name = "invite all player dans le clan",
-   CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
+-- Appeler la fonction pour inviter tous les joueurs
+inviteAllPlayers()
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
    end,
