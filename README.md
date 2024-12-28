@@ -259,7 +259,8 @@ end
 local Button = farmTab:CreateButton({
    Name = "anti afk😴",
    Callback = function()
-loadstring(game:HttpGet("https://pastebin.com/raw/2n6FV7Sc"))()
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/Proxylol/OtherScripts/main/AntiAfk.lua'),true))()
+
    -- The function that takes place when the button is pressed
    end,
 })
