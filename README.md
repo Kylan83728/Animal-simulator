@@ -260,7 +260,6 @@ local Button = farmTab:CreateButton({
    Name = "anti afk😴",
    Callback = function()
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/Proxylol/OtherScripts/main/AntiAfk.lua'),true))()
-
    -- The function that takes place when the button is pressed
    end,
 })
@@ -302,25 +301,6 @@ end
 
 -- Appeler la fonction pour inviter tous les joueurs
 inviteAllPlayers()
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-   end,
-})
-
-
-local isHitting = false
-local Toggle = clanTab:CreateToggle({
-   Name = "carry all player",
-   CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-   local Players = game:GetService("Players")
-
--- Fonction pour inviter tous les joueurs
-local function inviterTousLesJoueurs()
-    for _, joueur in ipairs(Players:GetPlayers()) do
-        -- Remplacez cette ligne par votre logique d'invitation
-        print("Invitation envoyée
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
    end,
