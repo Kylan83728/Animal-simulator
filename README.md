@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 
 local farmTab = Window:CreateTab("Farm", 4483362458) -- Title, Image
 
-
+local isHitting = false
 local Toggle = farmTab:CreateToggle({
    Name = "farm Spawn👊🔥",
    CurrentValue = false,
