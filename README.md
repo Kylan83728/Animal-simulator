@@ -2,8 +2,8 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "animal simulator🐻",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "script ASTRAL",
-   LoadingSubtitle = "Gui",
+   LoadingTitle = "script Astral",
+   LoadingSubtitle = "Hub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
    DisableRayfieldPrompts = false,
@@ -34,11 +34,6 @@ local Window = Rayfield:CreateWindow({
 })
 
 
-
-local farmTab = Window:CreateTab("Farm", 4483362458) -- Title, Image
-
-
-
 local Toggle = farmTab:CreateToggle({
    Name = "farm Spawn👊🔥",
    CurrentValue = false,
@@ -46,6 +41,7 @@ local Toggle = farmTab:CreateToggle({
    Callback = function(Value)
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
+
 
 -- Fonction pour téléporter le joueur vers une position cible
 local function teleportToTarget(targetPosition)
